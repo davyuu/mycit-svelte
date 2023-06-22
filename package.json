@@ -11,6 +11,10 @@
 		"lint": "eslint --fix .",
 		"format": "prettier --write .",
 		"fix-all": "npm-run-all --parallel lint format",
+		"check-lint": "eslint .",
+		"check-format": "prettier --check .",
+		"check-type": "tsc --project tsconfig.json --pretty --noEmit",
+		"check-all": "npm-run-all --parallel check-lint check-format check-type",
 		"prepare": "husky install"
 	},
 	"devDependencies": {
@@ -33,7 +37,7 @@
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
 		"tslib": "^2.4.1",
-		"typescript": "^5.0.0",
+		"typescript": "5.0.4",
 		"vite": "^4.3.0",
 		"vitest": "^0.25.3"
 	},
