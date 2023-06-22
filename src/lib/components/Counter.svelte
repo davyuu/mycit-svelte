@@ -7,9 +7,9 @@
 	$: displayed_count.set(count);
 	$: offset = modulo($displayed_count, 1);
 
-  function onCounterClick() {
-    count -= 1
-  }
+	function onCounterClick() {
+		count -= 1;
+	}
 
 	function modulo(n: number, m: number) {
 		// handle negative numbers
@@ -45,21 +45,21 @@
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		margin: 1rem 0;
 
-    button {
-      width: 2em;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 0;
-      background-color: transparent;
-      touch-action: manipulation;
-      font-size: 2rem;
- 
-      &:hover {
-        background-color: var(--color-bg-1);
-      }
-    }
+		button {
+			width: 2em;
+			padding: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 0;
+			background-color: transparent;
+			touch-action: manipulation;
+			font-size: 2rem;
+
+			&:hover {
+				background-color: var(--color-bg-1);
+			}
+		}
 	}
 
 	svg {
@@ -80,17 +80,17 @@
 		text-align: center;
 		position: relative;
 
-    strong {
-      position: absolute;
-      display: flex;
-      width: 100%;
-      height: 100%;
-      font-weight: 400;
-      color: var(--color-theme-1);
-      font-size: 4rem;
-      align-items: center;
-      justify-content: center;
-    }
+		strong {
+			position: absolute;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			font-weight: 400;
+			color: var(--color-theme-1);
+			font-size: 4rem;
+			align-items: center;
+			justify-content: center;
+		}
 	}
 
 	.counter-digits {

@@ -40,9 +40,9 @@
 		align-items: center;
 		padding: 12px;
 
-    a {
-      font-weight: bold;
-    }
+		a {
+			font-weight: bold;
+		}
 	}
 
 	@media (min-width: 480px) {
