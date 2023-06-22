@@ -6,7 +6,7 @@
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<meta name="Mycit Bulletin" content="Mycit Bulletin" />
 </svelte:head>
 
 <section>
