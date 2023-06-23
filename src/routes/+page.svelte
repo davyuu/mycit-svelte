@@ -1,5 +1,5 @@
 <script>
-	import Counter from '$lib/components/Counter.svelte';
+	import Home from '$lib/components/Home/Home.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
 </script>
@@ -25,7 +25,7 @@
 		try editing <strong>src/routes/+page.svelte</strong>
 	</h2>
 
-	<Counter />
+	<Home />
 </section>
 
 <style lang="scss">
