@@ -1,12 +1,12 @@
 <script lang="ts">
-	import IconMic from '~icons/material-symbols/mic-outline';
-	import IconChild from '~icons/cil/child';
-	import IconGroup from '~icons/iconoir/group';
-	import IconMessage from '~icons/tabler/messages';
-	import IconHeart from '~icons/mdi/heart-outline';
-	import IconCommunity from '~icons/majesticons/community-line';
-	import IconVote from '~icons/mdi/vote';
-	import IconEvents from '~icons/mdi/events';
+	import IconMic from '~icons/material-symbols/mic-outline'
+	import IconChild from '~icons/cil/child'
+	import IconGroup from '~icons/iconoir/group'
+	import IconMessage from '~icons/tabler/messages'
+	import IconHeart from '~icons/mdi/heart-outline'
+	import IconCommunity from '~icons/majesticons/community-line'
+	import IconVote from '~icons/mdi/vote'
+	import IconEvents from '~icons/mdi/events'
 
 	const sections = [
 		{
@@ -57,7 +57,7 @@
 			icon: IconEvents
 			// route: '/events'
 		}
-	];
+	]
 </script>
 
 <div class="my-8">
