@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Mycit</title>
 	<meta name="Mycit Bulletin" content="Mycit Bulletin" />
 </svelte:head>
 
