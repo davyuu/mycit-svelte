@@ -1,6 +1,25 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
+	interface MessageResponse {
+		acf: {
+			title: string;
+			series_name: string;
+			series_image: {
+				url: string;
+			};
+			date: string;
+			message_number: string;
+			message_chapter: string;
+			outline: string;
+			study_chapter: string;
+			study_guide: string;
+			group_material: string;
+			supplementary_material: string;
+			set_list: string;
+		};
+	}
+
 	interface Message {
 		title: string;
 		seriesName: string;
@@ -24,9 +43,9 @@
 
 	async function fetchMessages(): Promise<Message[]> {
 		const res = await fetch(MESSAGES_API_URL);
-		const data = await res.json();
+		const data: MessageResponse[] = await res.json();
 
-		return data.map((val: any) => {
+		return data.map((val: MessageResponse) => {
 			const message = val.acf;
 			return {
 				title: message.title,
