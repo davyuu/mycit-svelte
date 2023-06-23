@@ -1,53 +1,53 @@
 <script lang="ts">
-	import { confetti } from '@neoconfetti/svelte';
-	import { enhance } from '$app/forms';
-	import type { PageData, ActionData } from './$types';
-	import { reduced_motion } from './reduced-motion';
+	import { confetti } from '@neoconfetti/svelte'
+	import { enhance } from '$app/forms'
+	import type { PageData, ActionData } from './$types'
+	import { reduced_motion } from './reduced-motion'
 
-	export let data: PageData;
+	export let data: PageData
 
-	export let form: ActionData;
+	export let form: ActionData
 
 	/** Whether or not the user has won */
-	$: won = data.answers.at(-1) === 'xxxxx';
+	$: won = data.answers.at(-1) === 'xxxxx'
 
 	/** The index of the current guess */
-	$: i = won ? -1 : data.answers.length;
+	$: i = won ? -1 : data.answers.length
 
 	/** Whether the current guess can be submitted */
-	$: submittable = data.guesses[i]?.length === 5;
+	$: submittable = data.guesses[i]?.length === 5
 
 	/**
 	 * A map of classnames for all letters that have been guessed,
 	 * used for styling the keyboard
 	 */
-	let classnames: Record<string, 'exact' | 'close' | 'missing'>;
+	let classnames: Record<string, 'exact' | 'close' | 'missing'>
 
 	/**
 	 * A map of descriptions for all letters that have been guessed,
 	 * used for adding text for assistive technology (e.g. screen readers)
 	 */
-	let description: Record<string, string>;
+	let description: Record<string, string>
 
 	$: {
-		classnames = {};
-		description = {};
+		classnames = {}
+		description = {}
 
 		data.answers.forEach((answer, i) => {
-			const guess = data.guesses[i];
+			const guess = data.guesses[i]
 
 			for (let i = 0; i < 5; i += 1) {
-				const letter = guess[i];
+				const letter = guess[i]
 
 				if (answer[i] === 'x') {
-					classnames[letter] = 'exact';
-					description[letter] = 'correct';
+					classnames[letter] = 'exact'
+					description[letter] = 'correct'
 				} else if (!classnames[letter]) {
-					classnames[letter] = answer[i] === 'c' ? 'close' : 'missing';
-					description[letter] = answer[i] === 'c' ? 'present' : 'absent';
+					classnames[letter] = answer[i] === 'c' ? 'close' : 'missing'
+					description[letter] = answer[i] === 'c' ? 'present' : 'absent'
 				}
 			}
-		});
+		})
 	}
 
 	/**
@@ -55,14 +55,14 @@
 	 * if client-side JavaScript is enabled
 	 */
 	function update(event: MouseEvent) {
-		const guess = data.guesses[i];
-		const key = (event.target as HTMLButtonElement).getAttribute('data-key');
+		const guess = data.guesses[i]
+		const key = (event.target as HTMLButtonElement).getAttribute('data-key')
 
 		if (key === 'backspace') {
-			data.guesses[i] = guess.slice(0, -1);
-			if (form?.badGuess) form.badGuess = false;
+			data.guesses[i] = guess.slice(0, -1)
+			if (form?.badGuess) form.badGuess = false
 		} else if (guess.length < 5) {
-			data.guesses[i] += key;
+			data.guesses[i] += key
 		}
 	}
 
@@ -71,11 +71,11 @@
 	 * desktop users can use the keyboard to play the game
 	 */
 	function keydown(event: KeyboardEvent) {
-		if (event.metaKey) return;
+		if (event.metaKey) return
 
 		document
 			.querySelector(`[data-key="${event.key}" i]`)
-			?.dispatchEvent(new MouseEvent('click', { cancelable: true }));
+			?.dispatchEvent(new MouseEvent('click', { cancelable: true }))
 	}
 </script>
 
@@ -94,8 +94,8 @@
 	use:enhance={() => {
 		// prevent default callback from resetting the form
 		return ({ update }) => {
-			update({ reset: false });
-		};
+			update({ reset: false })
+		}
 	}}
 >
 	<a class="how-to-play" href="/sverdle/how-to-play">How to play</a>

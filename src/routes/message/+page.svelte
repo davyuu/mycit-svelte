@@ -1,52 +1,52 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount } from 'svelte'
 
 	interface MessageResponse {
 		acf: {
-			title: string;
-			series_name: string;
+			title: string
+			series_name: string
 			series_image: {
-				url: string;
-			};
-			date: string;
-			message_number: string;
-			message_chapter: string;
-			outline: string;
-			study_chapter: string;
-			study_guide: string;
-			group_material: string;
-			supplementary_material: string;
-			set_list: string;
-		};
+				url: string
+			}
+			date: string
+			message_number: string
+			message_chapter: string
+			outline: string
+			study_chapter: string
+			study_guide: string
+			group_material: string
+			supplementary_material: string
+			set_list: string
+		}
 	}
 
 	interface Message {
-		title: string;
-		seriesName: string;
-		seriesImage: string;
-		date: Date;
-		messageNumber: string;
-		messageChapter: string;
-		outline: string;
-		studyChapter: string;
-		studyGuide: string;
-		groupMaterial: string;
-		supplementaryMaterial: string;
-		setList: string;
+		title: string
+		seriesName: string
+		seriesImage: string
+		date: Date
+		messageNumber: string
+		messageChapter: string
+		outline: string
+		studyChapter: string
+		studyGuide: string
+		groupMaterial: string
+		supplementaryMaterial: string
+		setList: string
 	}
 
-	const MESSAGES_API_URL = 'https://mycit.info/wp-json/wp/v2/messages';
+	const MESSAGES_API_URL = 'https://mycit.info/wp-json/wp/v2/messages'
 
-	let messages: Message[] = [];
-	let currentMessageIndex: number;
-	$: message = messages[currentMessageIndex];
+	let messages: Message[] = []
+	let currentMessageIndex: number
+	$: message = messages[currentMessageIndex]
 
 	async function fetchMessages(): Promise<Message[]> {
-		const res = await fetch(MESSAGES_API_URL);
-		const data: MessageResponse[] = await res.json();
+		const res = await fetch(MESSAGES_API_URL)
+		const data: MessageResponse[] = await res.json()
 
 		return data.map((val: MessageResponse) => {
-			const message = val.acf;
+			const message = val.acf
 			return {
 				title: message.title,
 				seriesName: message.series_name,
@@ -60,19 +60,19 @@
 				groupMaterial: message.group_material,
 				supplementaryMaterial: message.supplementary_material,
 				setList: message.set_list
-			};
-		});
+			}
+		})
 	}
 
 	function getCurrentMessageIndex(): number {
-		const today = new Date();
-		return messages.findIndex((message) => message.date < today);
+		const today = new Date()
+		return messages.findIndex((message) => message.date < today)
 	}
 
 	onMount(async () => {
-		messages = await fetchMessages();
-		currentMessageIndex = getCurrentMessageIndex();
-	});
+		messages = await fetchMessages()
+		currentMessageIndex = getCurrentMessageIndex()
+	})
 </script>
 
 <div class="text-column">
