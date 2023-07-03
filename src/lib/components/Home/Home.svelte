@@ -64,12 +64,12 @@
 	<ul class="flex flex-wrap">
 		{#each sections as section}
 			<li class="w-1/2 md:w-1/3 p-4 text-center">
-				<div class="block px-4 py-8 rounded shadow-md">
-					<a href={section.route}>
-						<svelte:component this={section.icon} class="inline-block h-8 w-8" />
+				<a href={section.route}>
+					<div class="block px-4 py-8 rounded shadow-md">
+						<svelte:component this={section.icon} class="inline-block h-10 w-10" />
 						<p class="mt-4">{section.name}</p>
-					</a>
-				</div>
+					</div>
+				</a>
 			</li>
 		{/each}
 	</ul>
