@@ -26,10 +26,20 @@ jobs:
       - name: Run Build
         run: npm run build
 
+      # 👇 this sets CHANNEL_ID to 'live' if main, otherwise 'dev'
+      - name: Set channel ID
+        id: set_channel
+        run: |
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            echo "CHANNEL_ID=live" >> $GITHUB_ENV
+          else
+            echo "CHANNEL_ID=dev" >> $GITHUB_ENV
+          fi
+
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYCIT_V2 }}'
-          channelId: '${{ github.ref == "refs/heads/main" && "live" || "dev" }}'
+          channelId: ${{ env.CHANNEL_ID }}
           projectId: mycit-v2
