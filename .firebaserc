@@ -5,8 +5,11 @@
   "targets": {
     "mycit-v2": {
       "hosting": {
-        "dev": [
+        "live": [
           "mycit-v2"
+        ],
+        "dev": [
+          "mycit-v2-dev"
         ]
       }
     }
