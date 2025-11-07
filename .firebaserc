@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "mycit-v2"
-  }
+  },
+  "targets": {
+    "mycit-v2": {
+      "hosting": {
+        "dev": [
+          "mycit-v2"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
