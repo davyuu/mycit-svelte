@@ -1,11 +1,11 @@
 <script>
-	import Home from '$lib/components/Home/Home.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import Home from '$lib/components/Home/Home.svelte'
+	import welcome from '$lib/images/svelte-welcome.webp'
+	import welcome_fallback from '$lib/images/svelte-welcome.png'
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Mycit</title>
 	<meta name="Mycit Bulletin" content="Mycit Bulletin" />
 </svelte:head>
 

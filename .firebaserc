@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "mycit-v2"
+  },
+  "targets": {
+    "mycit-v2": {
+      "hosting": {
+        "live": [
+          "mycit-v2"
+        ],
+        "dev": [
+          "mycit-v2-dev"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

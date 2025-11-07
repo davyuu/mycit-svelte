@@ -1,12 +1,25 @@
-.DS_Store
-node_modules
-/build
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
 /.svelte-kit
-/package
-.env
-.env.*
-!.env.example
+
+# Build
+/build
+/public
+.firebase
 .vercel
 .output
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# misc
+.DS_Store
+.env
+.env.*
+.idea/
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+firebase-debug.log*
