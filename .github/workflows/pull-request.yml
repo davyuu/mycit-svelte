@@ -34,5 +34,4 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYCIT_V2 }}'
-          target: dev
           projectId: mycit-v2
