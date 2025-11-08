@@ -15,19 +15,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm' # or 'yarn', 'pnpm' for caching dependencies
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run Checks
-        run: npm run check-all
+        run: pnpm check-all
 
       - name: Run Tests
-        run: npm run test
+        run: pnpm test
 
       - name: Run Build
-        run: npm run build
+        run: pnpm build
 
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
