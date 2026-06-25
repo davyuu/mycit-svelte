@@ -1,8 +1,9 @@
 <script lang="ts">
 	import PageHeader from '$lib/components/PageHeader.svelte'
 	import { strings, themes } from '$lib/data/content'
+	import type { PageData } from './$types'
 
-	export let data
+	export let data: PageData
 	let search = ''
 	$: filtered = data.schedules.filter((person) => person.name.toLowerCase().includes(search.toLowerCase()))
 
