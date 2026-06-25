@@ -1,3 +1,5 @@
+import type { PageLoad } from './$types'
+
 type ServiceResponse = {
 	people: { _id: string; name: string }[]
 	type: 'CONFIRMED' | 'DECLINED'
@@ -35,7 +37,7 @@ function buildStats(confirmed: ServiceResponse[], declined: ServiceResponse[]) {
 		.sort((a, b) => a.name.localeCompare(b.name))
 }
 
-export async function load({ fetch }) {
+export const load: PageLoad = async ({ fetch }) => {
 	const baseUrl = 'https://cit-stats.herokuapp.com/services'
 	try {
 		const [confirmedResponse, declinedResponse] = await Promise.all([
@@ -47,10 +49,10 @@ export async function load({ fetch }) {
 			throw new Error('Stats service is unavailable.')
 		}
 
-		const [confirmed, declined] = await Promise.all([
+		const [confirmed, declined] = (await Promise.all([
 			confirmedResponse.json(),
 			declinedResponse.json()
-		])
+		])) as [ServiceResponse[], ServiceResponse[]]
 
 		return { schedules: buildStats(confirmed, declined), error: '' }
 	} catch (error) {
