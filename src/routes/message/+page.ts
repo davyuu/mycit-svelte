@@ -1,3 +1,5 @@
+import type { PageLoad } from './$types'
+
 export type Message = {
 	title: string
 	seriesName: string
@@ -13,14 +15,31 @@ export type Message = {
 	setList: string
 }
 
-export async function load({ fetch }) {
+type MessageResponse = {
+	acf?: {
+		title?: string
+		series_name?: string
+		series_image?: { url?: string }
+		date?: string
+		message_number?: string
+		message_chapter?: string
+		outline?: string
+		study_chapter?: string
+		study_guide?: string
+		group_material?: string
+		supplementary_material?: string
+		set_list?: string
+	}
+}
+
+export const load: PageLoad = async ({ fetch }) => {
 	const response = await fetch('https://mycit.info/wp-json/wp/v2/messages')
 	if (!response.ok) {
 		return { messages: [] as Message[], error: 'Unable to load messages.' }
 	}
 
-	const data = await response.json()
-	const messages = data.map((val: any) => {
+	const data = (await response.json()) as MessageResponse[]
+	const messages = data.map((val) => {
 		const message = val.acf || {}
 		return {
 			title: message.title || '',
