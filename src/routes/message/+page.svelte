@@ -1,94 +1,180 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import PageHeader from '$lib/components/PageHeader.svelte'
+	import { strings, themes } from '$lib/data/content'
+	import type { Message } from './+page'
 
-	interface MessageResponse {
-		acf: {
-			title: string
-			series_name: string
-			series_image: {
-				url: string
-			}
-			date: string
-			message_number: string
-			message_chapter: string
-			outline: string
-			study_chapter: string
-			study_guide: string
-			group_material: string
-			supplementary_material: string
-			set_list: string
-		}
+	export let data: { messages: Message[]; error: string }
+
+	let currentMessageIndex = data.messages.findIndex((message) => new Date(message.date) < new Date())
+	if (currentMessageIndex < 0) currentMessageIndex = 0
+
+	let currentTab = 'message'
+	$: message = data.messages[currentMessageIndex]
+
+	function formatDate(date: string) {
+		return new Intl.DateTimeFormat('en-CA', {
+			weekday: 'long',
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric'
+		}).format(new Date(date))
 	}
 
-	interface Message {
-		title: string
-		seriesName: string
-		seriesImage: string
-		date: Date
-		messageNumber: string
-		messageChapter: string
-		outline: string
-		studyChapter: string
-		studyGuide: string
-		groupMaterial: string
-		supplementaryMaterial: string
-		setList: string
+	function previous() {
+		if (currentMessageIndex < data.messages.length - 1) currentMessageIndex += 1
 	}
 
-	const MESSAGES_API_URL = 'https://mycit.info/wp-json/wp/v2/messages'
-
-	let messages: Message[] = []
-	let currentMessageIndex: number
-	$: message = messages[currentMessageIndex]
-
-	async function fetchMessages(): Promise<Message[]> {
-		const res = await fetch(MESSAGES_API_URL)
-		const data: MessageResponse[] = await res.json()
-
-		return data.map((val: MessageResponse) => {
-			const message = val.acf
-			return {
-				title: message.title,
-				seriesName: message.series_name,
-				seriesImage: message.series_image.url,
-				date: new Date(message.date),
-				messageNumber: message.message_number,
-				messageChapter: message.message_chapter,
-				outline: message.outline,
-				studyChapter: message.study_chapter,
-				studyGuide: message.study_guide,
-				groupMaterial: message.group_material,
-				supplementaryMaterial: message.supplementary_material,
-				setList: message.set_list
-			}
-		})
+	function next() {
+		if (currentMessageIndex > 0) currentMessageIndex -= 1
 	}
-
-	function getCurrentMessageIndex(): number {
-		const today = new Date()
-		return messages.findIndex((message) => message.date < today)
-	}
-
-	onMount(async () => {
-		messages = await fetchMessages()
-		currentMessageIndex = getCurrentMessageIndex()
-	})
 </script>
 
-<div class="text-column">
-	{#if message}
-		<div class="message-content">
-			<div class="message-header-container">
-				<img class="message-header-img" src={message.seriesImage} alt="" />
-				<div class="message-header-tabs-wrapper">
-					<div class="message-container">
-						<h1 class="message-title">{message.title}</h1>
-						<p class="message-date">{message.date?.toDateString()}</p>
-						<p class="message-number-chapter">{message.messageNumber} {message.messageChapter}</p>
-						<div class="message-html">{@html message.outline}</div>
-					</div>
-				</div>
-			</div>
+<PageHeader title={strings.messageHeader} color={themes.message} />
+
+{#if data.error}
+	<div class="notice error">{data.error}</div>
+{:else if message}
+	<section class="message-page">
+		<div class="nav-buttons">
+			<button type="button" on:click={previous} disabled={currentMessageIndex >= data.messages.length - 1}>Older</button>
+			<select bind:value={currentMessageIndex} aria-label="Select message week">
+				{#each data.messages as item, index}
+					<option value={index}>{formatDate(item.date)}</option>
+				{/each}
+			</select>
+			<button type="button" on:click={next} disabled={currentMessageIndex <= 0}>Newer</button>
 		</div>
-	{/if}
-</div>
+
+		{#if message.seriesImage}
+			<img class="series-image" src={message.seriesImage} alt={message.seriesName} />
+		{/if}
+
+		<div class="tabs">
+			<button class:active={currentTab === 'message'} on:click={() => (currentTab = 'message')}>Message</button>
+			{#if message.studyGuide}<button class:active={currentTab === 'study'} on:click={() => (currentTab = 'study')}>Study Guide</button>{/if}
+			{#if message.groupMaterial}<button class:active={currentTab === 'group'} on:click={() => (currentTab = 'group')}>Group Material</button>{/if}
+			{#if message.supplementaryMaterial}<button class:active={currentTab === 'supplement'} on:click={() => (currentTab = 'supplement')}>Supplement</button>{/if}
+			{#if message.setList}<button class:active={currentTab === 'songs'} on:click={() => (currentTab = 'songs')}>Songs</button>{/if}
+		</div>
+
+		<div class="message-container">
+			{#if currentTab === 'message'}
+				<h1>{message.title}</h1>
+				<p class="date">{formatDate(message.date)}</p>
+				<p class="number">{message.messageNumber ? `#${message.messageNumber}` : ''}{message.messageChapter ? `: ${message.messageChapter}` : ''}</p>
+				<div class="html">{@html message.outline}</div>
+			{:else if currentTab === 'study'}
+				<h1>Examining the text & our hearts:</h1>
+				{#if message.studyChapter}<p class="number">Read: {message.studyChapter}</p>{/if}
+				<div class="html">{@html message.studyGuide}</div>
+			{:else if currentTab === 'group'}
+				<h1>Community Group Material:</h1>
+				<div class="html">{@html message.groupMaterial}</div>
+			{:else if currentTab === 'supplement'}
+				<div class="html">{@html message.supplementaryMaterial}</div>
+			{:else if currentTab === 'songs'}
+				<h1>This week's set list:</h1>
+				<div class="html">{@html message.setList}</div>
+			{/if}
+		</div>
+	</section>
+{:else}
+	<div class="notice">No messages found.</div>
+{/if}
+
+<style lang="scss">
+	.message-page {
+		max-width: 820px;
+		margin: 0 auto;
+		background: white;
+		min-height: calc(100vh - 48px);
+	}
+
+	.nav-buttons {
+		display: flex;
+		gap: 8px;
+		padding: 16px;
+		align-items: center;
+	}
+
+	.nav-buttons select {
+		flex: 1;
+		padding: 10px;
+	}
+
+	button {
+		border: 0;
+		border-radius: 4px;
+		padding: 10px 12px;
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	button:disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
+
+	.series-image {
+		width: 100%;
+		max-height: 320px;
+		object-fit: cover;
+		display: block;
+	}
+
+	.tabs {
+		display: flex;
+		overflow-x: auto;
+		background: #f3f4f6;
+	}
+
+	.tabs button {
+		border-radius: 0;
+		background: transparent;
+		white-space: nowrap;
+		text-transform: uppercase;
+		font-size: 12px;
+		letter-spacing: 0.04em;
+		color: #4b5563;
+	}
+
+	.tabs button.active {
+		background: white;
+		color: #4a275d;
+	}
+
+	.message-container {
+		padding: 24px;
+	}
+
+	h1 {
+		font-size: 28px;
+		line-height: 1.1;
+		margin: 0 0 8px;
+		color: #4a275d;
+	}
+
+	.date,
+	.number {
+		margin: 0 0 12px;
+		color: #6b7280;
+	}
+
+	.html :global(img) {
+		max-width: 100%;
+		height: auto;
+	}
+
+	.notice {
+		max-width: 720px;
+		margin: 24px auto;
+		padding: 16px;
+		background: white;
+		border-radius: 6px;
+	}
+
+	.notice.error {
+		color: #991b1b;
+		background: #fee2e2;
+	}
+</style>
