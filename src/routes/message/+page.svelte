@@ -1,9 +1,9 @@
 <script lang="ts">
 	import PageHeader from '$lib/components/PageHeader.svelte'
 	import { strings, themes } from '$lib/data/content'
-	import type { Message } from './+page'
+	import type { PageData } from './$types'
 
-	export let data: { messages: Message[]; error: string }
+	export let data: PageData
 
 	let currentMessageIndex = data.messages.findIndex((message) => new Date(message.date) < new Date())
 	if (currentMessageIndex < 0) currentMessageIndex = 0
